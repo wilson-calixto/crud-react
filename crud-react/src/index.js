@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import CustomDataTable from './pages/CustomDataTable';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { ThemeProvider } from "./ThemeContext";
+import * as serviceWorker from "./serviceWorker";
 ReactDOM.render(
   <React.StrictMode>
-    <CustomDataTable />
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>,
   </React.StrictMode>,
   document.getElementById('root')
 );

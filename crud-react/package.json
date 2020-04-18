@@ -32,7 +32,10 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "reduxsauce": "^1.1.2",
-    "typeface-roboto": "^0.0.75"
+    "typeface-roboto": "^0.0.75",
+    "@emotion/core": "^10.0.7",
+    "@emotion/styled": "^10.0.7",
+    "emotion-theming": "^10.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
