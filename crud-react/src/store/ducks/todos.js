@@ -1,3 +1,5 @@
+// import { useTheme } from "../../ThemeContext";
+
 const Types = {
   SET_MODE: 'uqms/MODE',
   SET_MENU: 'uqms/MENU',
@@ -35,7 +37,7 @@ const initialState = {
     ],
 };
 
-
+// const themeState = useTheme();
 
 export const setInitialState = () => ({
   type: Types.SET_INITIAL_STATE,
@@ -58,6 +60,16 @@ export const setando_total_element_de_outra_forma = totalElements => ({
   type: Types.SET_TOTAL_ELEMENTS,
   totalElements,
 });
+
+
+export const changeTheme = (search = '') => {
+  return async (dispatch) => {
+    console.log("redux changeTheme")
+    // themeState.toggle()
+    console.log("redux changeTheme")
+  };
+};
+
 
 
 export default function reducer(state = initialState, action) {

@@ -70,6 +70,9 @@ const [state, setState] = React.useState({
         Adicionar curso
       </button>
       <MaterialTable
+      // style={{background: '#161617'}}
+      // style={{background: ${props => props.theme.background};}}
+      
       title="Editable Example"
       columns={state.columns}
       data={state.data}
