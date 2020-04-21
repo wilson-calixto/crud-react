@@ -1,59 +1,95 @@
 import { useTheme } from "emotion-theming";
-import { Provider } from 'react-redux';
 import CustomDataTable from './pages/CustomDataTable';
 import Test_Theme from './components/Test_Theme';
-import store from './store';
 import React, { useState } from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Demo from "./demo";
 import "./styles.css";
 import Tabela from "./pages/Tabela";
 
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThemeProvider } from "emotion-theming";
+
+import {
+  setIsDark2,
+  setInitialState,
+  setTotaElements,
+  setMaterialTheme
+} from '../src/store/ducks/todos';
 
 // Tabela
+const themeLight = {
+  text: "#000",
+  background: "#fff",
+  buttonText: "#000",
+  buttonTextHover: "#fff",
+  buttonBorder: "#000",
+  buttonBg: "rgba(0, 0, 0, 0)",
+  buttonBgHover: "rgba(0, 0, 0, 1)",
+};
 
-const App = ({ isDark, setIsDark }) => {
+const themeDark = {
+  text: "#fff",
+  background: "#121212",
+  buttonText: "#fff",
+  buttonTextHover: "#000",
+  buttonBorder: "#fff",
+  buttonBg: "rgba(255, 255, 255, 0)",
+  buttonBgHover: "rgba(255, 255, 255, 1)",
+};
+const App = () => {
 
-  // material ui theme
-  const [theme, setTheme] = useState({
-    palette: {
-      type: "light"
-    }
-  });
-  const muiTheme = createMuiTheme(theme);
 
-  // html theme
-  const simpleHtmlTheme = useTheme();
- 
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    dispatch(setInitialState());
+  }, []);
+
+
+
+  const { material_theme } = useSelector(
+    state => state.todos
+  );
+
+
+
+  const muiTheme = createMuiTheme(material_theme)
+
   //change themes
   const toggleDarkTheme = () => {
-    let newPaletteType = theme.palette.type === "light" ? "dark" : "light";
-    setTheme({
-      palette: {
-        type: newPaletteType
-      }
-    });
-    setIsDark(!isDark);
+    let newPaletteType = material_theme.palette.type === "light" ? "dark" : "light";
+
+    dispatch(setMaterialTheme({
+        palette: {
+          type: newPaletteType
+        }
+      }));
+
+
+
   };
-  // Tabela
+
+
 
   return (
-    
+
     <MuiThemeProvider theme={muiTheme}>
 
-    <Provider store={store}>
-          
-        <Test_Theme theme={simpleHtmlTheme} />
+      <ThemeProvider theme={material_theme.palette.type === "light" ? themeLight: themeDark}>
 
-            <h1>It's a light theme!</h1>
+        <Test_Theme theme={material_theme.palette.type === "light" ? themeLight: themeDark } />
 
-      <Demo onToggleDark={toggleDarkTheme} />
-      <Tabela theme={simpleHtmlTheme}/>
-      <CustomDataTable theme={simpleHtmlTheme}/>
-      
-      </Provider>
+        <h1> sdsadsdsaddsasd </h1>
+
+        <Demo onToggleDark={toggleDarkTheme} />
+        <Tabela theme={material_theme.palette.type === "light" ?  themeLight: themeDark} />
+        <CustomDataTable theme={material_theme.palette.type === "light" ? themeLight: themeDark} />
 
 
+      </ThemeProvider>
 
     </MuiThemeProvider>
 
