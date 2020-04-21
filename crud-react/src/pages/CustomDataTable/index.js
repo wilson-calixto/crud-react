@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import { css, jsx } from "@emotion/core";
+import { useTheme } from "emotion-theming";
 import { useSelector, useDispatch } from 'react-redux';
 import MaterialTable from 'material-table';
 import {
@@ -13,7 +14,7 @@ import {
 
 
 
-export default function CustomDataTable() {
+export default function CustomDataTable ({ theme }) {
 
 
   const dispatch = useDispatch();
@@ -62,13 +63,9 @@ const [state, setState] = React.useState({
   console.log('totalElements',totalElements)
   return (
     <>
-      <ul>
-        {totalElements}
-        { courses.map(course => <li key={course}>{course}</li>) }
-      </ul>
-      <button type="button" onClick={addCourse}>
-        Adicionar curso
-      </button>
+
+      
+
       <MaterialTable
       // style={{background: '#161617'}}
       // style={{background: ${props => props.theme.background};}}

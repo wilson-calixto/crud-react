@@ -1,32 +1,42 @@
-import React from "react";
+/** @jsx jsx */
+import { useState } from "react";
+import { jsx } from "@emotion/core";
 import ReactDOM from "react-dom";
+import { ThemeProvider } from "emotion-theming";
 import App from "./App";
-import { ThemeProvider } from "./ThemeContext";
-import * as serviceWorker from "./serviceWorker";
-// ReactDOM.render(
-//   <React.StrictMode>
-//   <ThemeProvider>
-//     <App />
-//   </ThemeProvider>,
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
+import "./styles.css";
 
-// // If you want your app to work offline and load faster, you can change
-// // unregister() to register() below. Note this comes with some pitfalls.
-// // Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.unregister();
+const themeLight = {
+  text: "#000",
+  background: "#fff",
+  buttonText: "#000",
+  buttonTextHover: "#fff",
+  buttonBorder: "#000",
+  buttonBg: "rgba(0, 0, 0, 0)",
+  buttonBgHover: "rgba(0, 0, 0, 1)",
+};
 
+const themeDark = {
+  text: "#fff",
+  background: "#121212",
+  buttonText: "#fff",
+  buttonTextHover: "#000",
+  buttonBorder: "#fff",
+  buttonBg: "rgba(255, 255, 255, 0)",
+  buttonBgHover: "rgba(255, 255, 255, 1)",
+};
 
-import  {createMuiTheme,MuiThemeProvider} from "@material-ui/core";
-import THEME from "./theme";
+function Root() {
+  const [isDark, setIsDark] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 
-
+  return (
+    <ThemeProvider theme={isDark ? themeDark : themeLight}>
+      <App isDark={isDark} setIsDark={setIsDark} />
+    </ThemeProvider>
+  );
+}
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(
-  <MuiThemeProvider theme={THEME}>
-   <App />
-  </MuiThemeProvider>, 
-  rootElement
-);
+ReactDOM.render(<Root />, rootElement);

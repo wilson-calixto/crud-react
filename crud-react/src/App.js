@@ -1,96 +1,31 @@
-// import React from 'react';
+import { useTheme } from "emotion-theming";
 import { Provider } from 'react-redux';
-// import styled from "@emotion/styled";
-// import store from './store';
-// import { AppBar, Button, Typography } from "@material-ui/core";
-// import THEME from "./theme";
-
-
 import CustomDataTable from './pages/CustomDataTable';
 import Test_Theme from './components/Test_Theme';
-// class App extends React.Component {
-//   state = {
-//     activePaletteId: THEME.palette.primary.id
-//   };
-
-//   get activePaletteName() {
-//     return THEME.palette.list[this.state.activePaletteId];
-//   }
-
-//   get activePalette() {
-//     return THEME.palette[this.activePaletteName];
-//   }
-
-//   nextPalette = () => {
-//     this.setState(s => ({
-//       activePaletteId: ++s.activePaletteId % THEME.palette.list.length
-//     }));
-//   };
-
-//   render() {
-//     return (
-
-//       <Provider store={store}>
-//         <Test_Theme></Test_Theme>
-//         <h1>It's a light theme!</h1>
-
-
-
-//         <div className="App">
-//           <AppBar
-//             position="static"
-//             style={{
-//               textAlign: 'center',
-//               marginBottom: '20px',
-//               backgroundColor: this.activePalette.main
-//             }}
-//           >
-//             <Typography
-//               style={{ color: '#fff' }}
-//               variant="subheading"
-//             >
-//               Palette: {this.activePaletteName}
-//             </Typography>
-//           </AppBar>
-//           <Button
-//             variant="raised"
-//             onClick={this.nextPalette}
-//             style={{ backgroundColor: this.activePalette.light }}
-//           >
-//             Change palette
-//         </Button>
-
-//         </div>
-
-//         <CustomDataTable
-//           style={{
-//             backgroundColor: this.activePalette.main
-//           }}
-//         />
-
-
-//       </Provider>
-//     );
-//   }
-// }
-
-
-// export default App;
-
 import store from './store';
 import React, { useState } from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Demo from "./demo";
+import "./styles.css";
+import Tabela from "./pages/Tabela";
 
-const App = () => {
-  // We keep the theme in app state
+
+// Tabela
+
+const App = ({ isDark, setIsDark }) => {
+
+  // material ui theme
   const [theme, setTheme] = useState({
     palette: {
       type: "light"
     }
   });
+  const muiTheme = createMuiTheme(theme);
 
-  // we change the palette type of the theme in state
+  // html theme
+  const simpleHtmlTheme = useTheme();
+ 
+  //change themes
   const toggleDarkTheme = () => {
     let newPaletteType = theme.palette.type === "light" ? "dark" : "light";
     setTheme({
@@ -98,22 +33,27 @@ const App = () => {
         type: newPaletteType
       }
     });
+    setIsDark(!isDark);
   };
+  // Tabela
 
-  // we generate a MUI-theme from state's theme object
-  const muiTheme = createMuiTheme(theme);
-
-  // the mui theme is used in the themeProvider.
   return (
+    
     <MuiThemeProvider theme={muiTheme}>
 
     <Provider store={store}>
-            <Test_Theme></Test_Theme>
+          
+        <Test_Theme theme={simpleHtmlTheme} />
+
             <h1>It's a light theme!</h1>
 
       <Demo onToggleDark={toggleDarkTheme} />
-      <CustomDataTable/>
+      <Tabela theme={simpleHtmlTheme}/>
+      <CustomDataTable theme={simpleHtmlTheme}/>
+      
       </Provider>
+
+
 
     </MuiThemeProvider>
 

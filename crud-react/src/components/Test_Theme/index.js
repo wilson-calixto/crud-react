@@ -1,57 +1,46 @@
-import React, { Component } from 'react';
-import { withTheme } from '@material-ui/core/styles';
 
-// import { Container } from './styles';
-import { useSelector, useDispatch } from 'react-redux';
+/** @jsx jsx */
+import { css, jsx } from "@emotion/core";
+import { useTheme } from "emotion-theming";
 
-import { useTheme,ThemeContext } from "../../ThemeContext";
+export default function Test_Theme ({ theme}) {
 
-export default function Test_Theme(props) {
+  return (
+    <div
+      css={css`
+        padding: 50px 0;
+        background-color: ${theme.background};
+        color: ${theme.text};
+        text-align: center;
+        transition-duration: 0.2s;
+        transition-property: background-color, color;
+      `}
+    >
+      <h1>Hello Mode</h1>
+      <h2>We will make some magic happen!</h2>
+      <button
+        css={css`
+          margin-top: 30px;
+          border: 2px solid ${theme.buttonBorder};
+          background-color: ${theme.buttonBg};
+          color: ${theme.buttonText};
+          padding: 14px 28px;
+          font-size: 16px;
+          transition-duration: 0.2s;
+          transition-property: background-color, color;
+          cursor: pointer;
 
-    const themeState = useTheme();
-
-    const dispatch = useDispatch();
-
-    function achangeTheme() {
-        themeState.toggle()
-        console.log('themeState',this.props )
-    }
-
-    
- 
-    // useEffect(() => {
-        
-    //     console.log('state',props.theme)
-    // }, [props.theme]);
-
-    // 
-//     return (
-//         <>
-//             <h1>Dark Mode example</h1>
-//             <div>
-//                 <button onClick={() => achangeTheme()
-//                 }>
-//                     {themeState.dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-//                 </button>
-//             </div>
-            
-//         </>
-//     );
-
-// }
-
-return (
-    <ThemeContext.Consumer>
-      {({dark, toggle}) => (
-        <button
-          onClick={toggle}
-        //   style={{backgroundColor: dark.body}}
-        >
-          Toggle Theme
-        </button>
-      )}
-      
-
-    </ThemeContext.Consumer>
+          :hover {
+            background-color: ${theme.buttonBgHover};
+            color: ${theme.buttonTextHover};
+          }
+        `}
+        onClick={() => {
+        }}
+      >
+        Change to mode
+      </button>
+    </div>
   );
 }
+
