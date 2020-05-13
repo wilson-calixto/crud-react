@@ -16,24 +16,27 @@ import {
   setando_total_element_de_outra_forma
 } from '../../store/ducks/todos';
 
+import {themeLight,themeDark} from '../../Utils'
 
-
-export default function Tabela ({ theme}) {
+export default function Tabela () {
 
 
   const dispatch = useDispatch();
-
-  function addCourse() {
-    dispatch(setando_total_element_de_outra_forma(1))
-    dispatch(add_course('slksnjfns'))
-
-  }
-  
   useEffect(() => {
     dispatch(setInitialState());
+
+    
+    
     // eslint-disable-next-line
 }, []);
 
+const { material_theme } = useSelector(
+  state => state.todos
+);
+
+let theme = material_theme.palette.type === "light" ? themeLight: themeDark
+
+ 
 const courses = useSelector(state =>  state.todos.data);
 
 

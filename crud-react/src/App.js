@@ -1,43 +1,22 @@
-import { useTheme } from "emotion-theming";
-import CustomDataTable from './pages/CustomDataTable';
-import Test_Theme from './components/Test_Theme';
+
 import React, { useState } from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Demo from "./demo";
 import "./styles.css";
-import Tabela from "./pages/Tabela";
-
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from "emotion-theming";
+import Routes from './Routes';
 
 import {
-  setIsDark2,
   setInitialState,
-  setTotaElements,
   setMaterialTheme
 } from '../src/store/ducks/todos';
+import {themeLight,themeDark} from './Utils'
+import Side_Bar from "./components/Side_Bar";
 
-// Tabela
-const themeLight = {
-  text: "#000",
-  background: "#fff",
-  buttonText: "#000",
-  buttonTextHover: "#fff",
-  buttonBorder: "#000",
-  buttonBg: "rgba(0, 0, 0, 0)",
-  buttonBgHover: "rgba(0, 0, 0, 1)",
-};
 
-const themeDark = {
-  text: "#fff",
-  background: "#121212",
-  buttonText: "#fff",
-  buttonTextHover: "#000",
-  buttonBorder: "#fff",
-  buttonBg: "rgba(255, 255, 255, 0)",
-  buttonBgHover: "rgba(255, 255, 255, 1)",
-};
+
 const App = () => {
 
 
@@ -71,29 +50,18 @@ const App = () => {
 
 
   };
-// TODO melhorar o tema
 
 
   return (
-
+    // TODO resolver bug da troca de tema
     <MuiThemeProvider theme={muiTheme}>
-
       <ThemeProvider theme={material_theme.palette.type === "light" ? themeLight: themeDark}>
-
-        <Test_Theme theme={material_theme.palette.type === "light" ? themeLight: themeDark } />
-
-        <h1> sdsadsdsaddsasd </h1>
-
         <Demo onToggleDark={toggleDarkTheme} />
-        <Tabela theme={material_theme.palette.type === "light" ?  themeLight: themeDark} />
-        <CustomDataTable theme={material_theme.palette.type === "light" ? themeLight: themeDark} />
-
+        <Routes />
 
       </ThemeProvider>
-
     </MuiThemeProvider>
 
   );
 };
-// Test_Theme
 export default App;

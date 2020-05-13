@@ -1,9 +1,33 @@
 
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-import { useTheme } from "emotion-theming";
+import {themeLight,themeDark} from '../../Utils'
 
-export default function Test_Theme ({ theme}) {
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setInitialState,
+} from '../../store/ducks/todos';
+export default function Test_Theme () {
+
+
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setInitialState());
+
+    
+    
+    // eslint-disable-next-line
+}, []);
+
+const { material_theme } = useSelector(
+  state => state.todos
+);
+
+let theme = material_theme.palette.type === "light" ? themeLight: themeDark
+
+
 
   return (
     <div

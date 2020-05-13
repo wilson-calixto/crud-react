@@ -16,7 +16,7 @@ import {
 import { apiRoutes } from '../../Api';
 
 
-export default function CustomDataTable({ theme }) {
+export default function CustomDataTable() {
 
 
   const dispatch = useDispatch();
