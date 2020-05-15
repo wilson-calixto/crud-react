@@ -1,325 +1,357 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Form, Field } from 'react-final-form';
-import { TextField, Checkbox, Radio, Select } from 'final-form-material-ui';
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import NumberFormat from 'react-number-format';
+import { useSelector, useDispatch } from 'react-redux';
+import { DropzoneDialog } from 'material-ui-dropzone';
 import {
-  Typography,
-  Paper,
-  Link,
-  Grid,
-  Button,
-  CssBaseline,
-  RadioGroup,
-  FormLabel,
-  MenuItem,
-  FormGroup,
-  FormControl,
-  FormControlLabel,
+    create,
+    find,
+    findAll,
+    update,
+    remove,
+    setInitialState
+} from '../../../../store/ducks/todos';
+import { apiRoutes } from '../../../../Api';
+import {
+    Typography,
+    Paper,
+    Link,
+    Grid,
+    Button,
+    Select,
+    CssBaseline,
+    RadioGroup,
+    FormLabel,
+    MenuItem,
+    FormGroup,
+    FormControl,
+    FormControlLabel,
 } from '@material-ui/core';
-// Picker
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  TimePicker,
-  DatePicker,
-} from '@material-ui/pickers';
 
-function DatePickerWrapper(props) {
-  const {
-    input: { name, onChange, value, ...restInput },
-    meta,
-    ...rest
-  } = props;
-  const showError =
-    ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-    meta.touched;
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
-  return (
-    <DatePicker
-      {...rest}
-      name={name}
-      helperText={showError ? meta.error || meta.submitError : undefined}
-      error={showError}
-      inputProps={restInput}
-      onChange={onChange}
-      value={value === '' ? null : value}
-    />
-  );
-}
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
+const useStyles = makeStyles({});
 
-function TimePickerWrapper(props) {
-  const {
-    input: { name, onChange, value, ...restInput },
-    meta,
-    ...rest
-  } = props;
-  const showError =
-    ((meta.submitError && !meta.dirtySinceLastSubmit) || meta.error) &&
-    meta.touched;
+const initialFieldState = {
+    name: { value: 'abab' },
+    price: { value: '' },
+    clientId: { value: '' },
+    productId: { value: '' },
+    storeId: { value: '' },
+    description: { value: '' },
+    categoryId: { value: '' },
+    brandId: { value: '' },
+    sizes: {value: [
+        {value: true,name:'gilad'},
+        {value: false,name:'jason'},
+        {value: false,name:'antoine'},
+    ] },
 
-  return (
-    <TimePicker
-      {...rest}
-      name={name}
-      helperText={showError ? meta.error || meta.submitError : undefined}
-      error={showError}
-      inputProps={restInput}
-      onChange={onChange}
-      value={value === '' ? null : value}
-    />
-  );
-}
 
-const onSubmit = async values => {
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-  await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
 };
-const validate = values => {
-  const errors = {};
-  if (!values.firstName) {
-    errors.firstName = 'Required';
-  }
-  if (!values.lastName) {
-    errors.lastName = 'Required';
-  }
-  if (!values.email) {
-    errors.email = 'Required';
-  }
-  return errors;
+
+const initialErrorState = {
+    name: { error: false, helperText: '' },
+    price: { error: false, helperText: '' },
+    clientId: { error: false, helperText: '' },
+    productId: { error: false, helperText: '' },
+    storeId: { error: false, helperText: '' },
+    description: { error: false, helperText: '' },
+    categoryId: { error: false, helperText: '' },
+    brandId: { error: false, helperText: '' },
 };
+
+const initialMenuState = {
+    clientId: [],
+    productId: [],
+    storeId: [],
+    categoryId: [],
+    brandId: []
+};
+
 
 export default function Product() {
-  return (
-    <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
-      <CssBaseline />
-      <Typography variant="h4" align="center" component="h1" gutterBottom>
-        🏁 React Final Form
-      </Typography>
-      <Typography variant="h5" align="center" component="h2" gutterBottom>
-        Material-UI Example
-      </Typography>
-      <Typography paragraph>
-        <Link href="https://github.com/erikras/react-final-form#-react-final-form">
-          Read Docs
-        </Link>
-        . This example demonstrates using{' '}
-        <Link href="https://material-ui.com/demos/text-fields/">
-          Material-UI
-        </Link>{' '}
-        form controls.
-      </Typography>
-      <Form
-        onSubmit={onSubmit}
-        initialValues={{ employed: true, stooge: 'larry' }}
-        validate={validate}
-        render={({ handleSubmit, reset, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit} noValidate>
+
+    const classes = useStyles();
+    const dispatch = useDispatch();
+    const mode = useSelector(state => state.todos);
+    const { loading, updateInfo } = useSelector(state => state.todos);
+    const [fields, setFields] = useState(initialFieldState);
+    const [errors, setErrors] = useState(initialErrorState);
+    const [menuItens, setmenuItens] = useState(initialMenuState);
+    const inputRef = useRef();
+
+
+
+
+    const isEmpty = obj => {
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    async function populate() {
+        const clientItens = await findAll(apiRoutes.CLIENTS);
+        const storeItens = await findAll(apiRoutes.STORE);
+        const categoryItens = await findAll(apiRoutes.CATEGORY);
+        const brandItens = await findAll(apiRoutes.BRANDS);
+
+
+
+        await setmenuItens({
+            clientId: clientItens,
+            storeId: storeItens,
+            categoryId: categoryItens,
+            brandId: brandItens
+        });
+        console.log('menuItens', menuItens)
+
+    }
+
+    useEffect(async () => {
+
+        populate()
+
+    }, []);
+
+
+
+    function clean() {
+        // setFields(initialFieldState);
+        // setErrors(initialErrorState);
+    }
+
+    function handleClose() {
+        // clean();
+        // onClose();
+        console.log('dsdmsndjs')
+    }
+
+
+    // async function handleSubmit(event) {
+    //     alert('Uma dissertação foi enviada: ');
+    //     // event.preventDefault();
+    // }
+
+    function convertData(data) {
+        const newData = {
+            name: data['name'].value,
+            price: data['price'].value,
+            clientId: data['clientId'].value,
+            productId: data['productId'].value,
+            storeId: data['storeId'].value,
+            description: data['description'].value,
+            categoryId: data['categoryId'].value,
+            brandId: data['brandId'].value,
+        }
+        return newData;
+    }
+
+    async function handleSubmit() {
+        // dispatch(setLoading(true));
+
+        console.log('fields', convertData(fields))
+
+        const { data, success } = await dispatch(
+            create(apiRoutes.PRODUCTS, convertData(fields), 'Linha de Produção')
+        );
+
+
+        if (success === true) {
+            // clean();
+            // onClose();
+            alert('success');
+
+        } else {
+            alert('error');
+            let updateErrors = { ...errors };
+            data.forEach(errorData => {
+                const { field, error: helperText } = errorData;
+                updateErrors = {
+                    ...updateErrors,
+                    [field]: { error: true, helperText },
+                };
+            });
+            // setErrors(updateErrors);
+        }
+    }
+
+    function handleChange(field, value) {
+        setFields({ ...fields, [field]: { value } });
+    }
+
+    function sizeHandleChange(item) {
+        const temp = [];
+        fields.sizes.value.map(value => {
+            temp.push(value);
+        });
+
+        const i = temp.indexOf(item)
+        item.value=!item.value
+        temp[i] = item
+        console.log('sizes', temp)
+        handleChange('sizes',temp)
+
+    }
+
+    // TODO ADD Caixas de Seleção com FormGroup
+
+
+
+    return (
+        <>
+
+
             <Paper style={{ padding: 16 }}>
-              <Grid container alignItems="flex-start" spacing={2}>
-                <Grid item xs={6}>
-                  <Field
-                    fullWidth
-                    required
-                    name="firstName"
-                    component={TextField}
-                    type="text"
-                    label="First Name"
-                  />
+                <Grid container alignItems="flex-start" spacing={2}>
+
+
+
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label="Nome"
+                            value={fields.name.value}
+                            onChange={e => handleChange('name', e.target.value)}
+                            error={errors.name.error}
+                            helperText={errors.name.helperText}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label="Preço"
+                            value={fields.name.value}
+                            onChange={e => handleChange('price', e.target.value)}
+                            error={errors.name.error}
+                            helperText={errors.name.helperText}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="cliente"
+                            value={fields.clientId.value}
+                            onChange={e => handleChange('clientId', e.target.value)}
+                            error={errors.clientId.error}
+                            helperText={errors.clientId.helperText}
+                        >
+
+                            {menuItens.clientId.map(item => (
+                                <MenuItem key={item.id} value={item.id} >
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+
+
+                    <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="store"
+                            value={fields.storeId.value}
+                            onChange={e =>
+                                handleChange('storeId', e.target.value)
+                            }
+                            error={errors.storeId.error}
+                            helperText={errors.storeId.helperText}
+                        >
+
+                            {menuItens.storeId.map(item => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="category"
+                            value={fields.categoryId.value}
+                            onChange={e =>
+                                handleChange('categoryId', e.target.value)
+                            }
+                            error={errors.categoryId.error}
+                            helperText={errors.categoryId.helperText}
+                        >
+
+                            {menuItens.categoryId.map(item => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="brand"
+                            value={fields.brandId.value}
+                            onChange={e =>
+                                handleChange('brandId', e.target.value)
+                            }
+                            error={errors.brandId.error}
+                            helperText={errors.brandId.helperText}
+                        >
+
+                            {menuItens.brandId.map(item => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label="Description"
+                            value={fields.description.value}
+                            onChange={e => handleChange('description', e.target.value)}
+                            error={errors.description.error}
+                            helperText={errors.description.helperText}
+                        />
+                    </Grid>
+
+                    {fields.sizes.value.map(item => (
+                        <FormControlLabel
+                            control={<Checkbox checked={item.value} onChange={e => sizeHandleChange(item)} name={item.name} />}
+                            label={item.name}
+                        />
+                    ))}
+
+
+
+                    <Grid item style={{ marginTop: 16 }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            disabled={false}
+                            onClick={handleSubmit}
+
+                        >
+                            Submit
+                                </Button>
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Field
-                    fullWidth
-                    required
-                    name="lastName"
-                    component={TextField}
-                    type="text"
-                    label="Last Name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    name="email"
-                    fullWidth
-                    required
-                    component={TextField}
-                    type="email"
-                    label="Email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    label="Employed"
-                    control={
-                      <Field
-                        name="employed"
-                        component={Checkbox}
-                        type="checkbox"
-                      />
-                    }
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Best Stooge</FormLabel>
-                    <RadioGroup row>
-                      <FormControlLabel
-                        label="Larry"
-                        control={
-                          <Field
-                            name="stooge"
-                            component={Radio}
-                            type="radio"
-                            value="larry"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Moe"
-                        control={
-                          <Field
-                            name="stooge"
-                            component={Radio}
-                            type="radio"
-                            value="moe"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Curly"
-                        control={
-                          <Field
-                            name="stooge"
-                            component={Radio}
-                            type="radio"
-                            value="curly"
-                          />
-                        }
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Sauces</FormLabel>
-                    <FormGroup row>
-                      <FormControlLabel
-                        label="Ketchup"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="ketchup"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Mustard"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="mustard"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Salsa"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="salsa"
-                          />
-                        }
-                      />
-                      <FormControlLabel
-                        label="Guacamole 🥑"
-                        control={
-                          <Field
-                            name="sauces"
-                            component={Checkbox}
-                            type="checkbox"
-                            value="guacamole"
-                          />
-                        }
-                      />
-                    </FormGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    fullWidth
-                    name="notes"
-                    component={TextField}
-                    multiline
-                    label="Notes"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    fullWidth
-                    name="city"
-                    component={Select}
-                    label="Select a City"
-                    formControlProps={{ fullWidth: true }}
-                  >
-                    <MenuItem value="London">London</MenuItem>
-                    <MenuItem value="Paris">Paris</MenuItem>
-                    <MenuItem value="Budapest">
-                      A city with a very long Name
-                    </MenuItem>
-                  </Field>
-                </Grid>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid item xs={6}>
-                    <Field
-                      name="rendez-vous"
-                      component={DatePickerWrapper}
-                      fullWidth
-                      margin="normal"
-                      label="Rendez-vous"
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Field
-                      name="alarm"
-                      component={TimePickerWrapper}
-                      fullWidth
-                      margin="normal"
-                      label="Alarm"
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-                <Grid item style={{ marginTop: 16 }}>
-                  <Button
-                    type="button"
-                    variant="contained"
-                    onClick={reset}
-                    disabled={submitting || pristine}
-                  >
-                    Reset
-                  </Button>
-                </Grid>
-                <Grid item style={{ marginTop: 16 }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={submitting}
-                  >
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
             </Paper>
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
-          </form>
-        )}
-      />
-    </div>
-  );
+
+        </>
+
+    );
 }

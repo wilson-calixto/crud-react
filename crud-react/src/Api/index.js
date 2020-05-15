@@ -7,7 +7,13 @@ const api = axios.create({
 });
 
 const apiRoutes = {
-    TESTE_DE_API: '/teste_de_api'
+    TESTE_DE_API: '/teste_de_api',
+    PRODUCTS:'/products',
+    CLIENTS:'/clients',
+    STORE:'/store',
+    CATEGORY:'/category',
+    BRANDS:'/brands',
+
 };
 
 export { api, apiRoutes };

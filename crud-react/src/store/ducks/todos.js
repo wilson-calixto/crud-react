@@ -82,6 +82,15 @@ export const add_row = ( rows) => ({
   rows
 });
 
+export const findAll = async route => {
+  const { data } = await api.get(`${route}`);
+  const itens = [];
+  data.map(value => {
+      const { id, name } = value;
+      itens.push({ id, name });
+  });
+  return itens;
+};
 
 
 export const setando_total_element_de_outra_forma = totalElements => ({

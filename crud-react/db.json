@@ -1,4 +1,76 @@
-{
+{ 
+  "brands": [
+  {
+    "name": "aa",
+    "lastName": "a",
+    "email": "aaa",
+    "sauces": [
+      "ketchup"
+    ],
+    "notes": "a",
+    "city": "Budapest",
+    "id": 6
+  }
+],
+  "category": [
+    {
+      "name": "aa",
+      "lastName": "a",
+      "email": "aaa",
+      "sauces": [
+        "ketchup"
+      ],
+      "notes": "a",
+      "city": "Budapest",
+      "id": 6
+    }
+  ],
+  "store": [
+    {
+      "name": "aa",
+      "lastName": "a",
+      "email": "aaa",
+      "sauces": [
+        "ketchup"
+      ],
+      "notes": "a",
+      "city": "Budapest",
+      "id": 6
+    }
+  ],
+  "products": [
+    {
+      "name": "abab",
+      "price": "",
+      "clientId": "",
+      "productId": "",
+      "storeId": "",
+      "description": "xxcxczxczx",
+      "categoryId": "",
+      "id": 1
+    }
+  ],
+  "clients": [
+    {
+      "name": "qqqqq",
+      "lastName": "a",
+      "email": "aaa",
+      "sauces": [
+        "ketchup"
+      ],
+      "notes": "a",
+      "city": "Budapest",
+      "id": 6
+    },
+    {
+      "name": "rrrrrrr",
+      "lastName": "W",
+      "email": "W",
+      "notes": "W",
+      "city": "Paris",
+      "id": 7
+    }
+  ],
   "teste_de_api": [
     {
       "name": "1ee",

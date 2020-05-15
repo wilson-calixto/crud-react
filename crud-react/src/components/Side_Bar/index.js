@@ -14,8 +14,11 @@ export default function Side_Bar() {
             <div>
                 <ul>
                     <li>
-                        <Link to="/product">product</Link>
+                        <Link  to="/product">Create a product</Link>
                     </li>
+                    <li>
+                        <Link to="/product/my">My products</Link>
+                    </li>                    
                     <li>
                         <Link to="/tabela">tabela</Link>
                     </li>
