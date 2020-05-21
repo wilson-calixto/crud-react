@@ -1,53 +1,110 @@
-{ 
-  "brands": [
-  {
-    "name": "aa",
-    "lastName": "a",
-    "email": "aaa",
-    "sauces": [
-      "ketchup"
-    ],
-    "notes": "a",
-    "city": "Budapest",
-    "id": 6
-  }
-],
-  "category": [
+{
+  "color": [
     {
-      "name": "aa",
-      "lastName": "a",
-      "email": "aaa",
-      "sauces": [
-        "ketchup"
-      ],
-      "notes": "a",
-      "city": "Budapest",
-      "id": 6
+      "name": "red",
+      "id": 1
+    },
+    {
+      "name": "blue",
+      "id": 2
+    },
+    {
+      "name": "green",
+      "id": 4
+    }
+  ],
+  "styles": [
+    {
+      "name": "casual",
+      "id": 1
+    },
+    {
+      "name": "sport",
+      "id": 2
+    },
+    {
+      "name": "social",
+      "id": 3
+    }
+  ],
+  "materials": [
+    {
+      "name": "couro",
+      "id": 1
+    },
+    {
+      "name": "poliester",
+      "id": 2
+    }
+  ],
+  "brands": [
+    {
+      "name": "ckz",
+      "id": 1
+    },
+    {
+      "name": "lacoste",
+      "id": 2
+    }
+  ],
+  "categories": [
+    {
+      "name": "cloutes",
+      "id": 1
+    },
+    {
+      "name": "home",
+      "id": 2
     }
   ],
   "store": [
     {
-      "name": "aa",
-      "lastName": "a",
-      "email": "aaa",
-      "sauces": [
-        "ketchup"
-      ],
-      "notes": "a",
-      "city": "Budapest",
+      "name": "my first store",
       "id": 6
     }
   ],
-  "products": [
+  "product": [
     {
-      "name": "abab",
-      "price": "",
-      "clientId": "",
-      "productId": "",
-      "storeId": "",
-      "description": "xxcxczxczx",
-      "categoryId": "",
+      "information": {
+        "category": "men_s_fashion",
+        "name": "short",
+        "price": 14,
+        "sales": 14,
+        "store": "sdsdsdsdd",
+        "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
+        "rating": 0
+      },
+      "details": {
+        "description": "red and blue",
+        "Sizes": [],
+        "color": "red",
+        "Material": "poliester",
+        "Style": "casual",
+        "Brand": "as",
+        "last_ratings": []
+      },
       "id": 1
+    },
+    {
+      "information": {
+        "category": "men_s_fashion",
+        "name": "short",
+        "price": 14,
+        "sales": 14,
+        "store": "sdsdsdsdd",
+        "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
+        "rating": 0
+      },
+      "details": {
+        "description": "red and blue",
+        "Sizes": [],
+        "color": "red",
+        "Material": "poliester",
+        "Style": "casual",
+        "Brand": "as",
+        "last_ratings": []
+      },
+      "id": 2
     }
   ],
   "clients": [
@@ -92,6 +149,21 @@
       "birthYear": "2",
       "birthCity": "34",
       "id": 5
+    }
+  ],
+  "product2": [
+    {
+      "category": "men_s_fashion",
+      "name": "2020 moda camiseta shorts definir masculino verão 2pc treino + shorts conjuntos de praia dos homens casual camisetas conjunto sportwears",
+      "price": 14,
+      "sales": 14,
+      "store": "sdsdsdsdd",
+      "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
+      "store_name": "Personality printed Store",
+      "rating": 4.5,
+      "shipping":12.50,
+      "id": 1
+
     }
   ]
 }

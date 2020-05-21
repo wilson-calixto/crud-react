@@ -8,11 +8,16 @@ const api = axios.create({
 
 const apiRoutes = {
     TESTE_DE_API: '/teste_de_api',
-    PRODUCTS:'/products',
+    PRODUCTS:'/product',
+    PRODUCTS2:'/product2',
+
     CLIENTS:'/clients',
     STORE:'/store',
-    CATEGORY:'/category',
+    CATEGORIES:'/categories',
     BRANDS:'/brands',
+    MATERIALS:'/materials',
+    STYLES:'/styles',
+    COLORS:'/color',
 
 };
 

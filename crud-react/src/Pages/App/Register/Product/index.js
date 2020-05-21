@@ -38,17 +38,24 @@ const useStyles = makeStyles({});
 const initialFieldState = {
     name: { value: 'abab' },
     price: { value: '' },
-    clientId: { value: '' },
-    productId: { value: '' },
     storeId: { value: '' },
     description: { value: '' },
     categoryId: { value: '' },
     brandId: { value: '' },
-    sizes: {value: [
-        {value: true,name:'gilad'},
-        {value: false,name:'jason'},
-        {value: false,name:'antoine'},
-    ] },
+    materialsId: { value: '' },
+    stylesId: { value: '' },
+    colorsId: { value: '' },
+    sizes: {
+        value: [
+            { value: true, name: 'PP' },
+            { value: true, name: 'P' },
+            { value: false, name: 'M' },
+            { value: false, name: 'G' },
+            { value: false, name: 'GG' },
+            { value: false, name: 'EG' },
+            { value: false, name: 'XG' },
+        ]
+    },
 
 
 };
@@ -56,20 +63,22 @@ const initialFieldState = {
 const initialErrorState = {
     name: { error: false, helperText: '' },
     price: { error: false, helperText: '' },
-    clientId: { error: false, helperText: '' },
-    productId: { error: false, helperText: '' },
     storeId: { error: false, helperText: '' },
     description: { error: false, helperText: '' },
     categoryId: { error: false, helperText: '' },
     brandId: { error: false, helperText: '' },
+    materialsId: { error: false, helperText: '' },
+    stylesId: { error: false, helperText: '' },
+    colorsId: { error: false, helperText: '' },
 };
 
 const initialMenuState = {
-    clientId: [],
-    productId: [],
     storeId: [],
     categoryId: [],
-    brandId: []
+    brandId: [],
+    materialsId: [],
+    stylesId: [],
+    colorsId: [],
 };
 
 
@@ -96,29 +105,30 @@ export default function Product() {
         return true;
     };
 
-    async function populate() {
-        const clientItens = await findAll(apiRoutes.CLIENTS);
-        const storeItens = await findAll(apiRoutes.STORE);
-        const categoryItens = await findAll(apiRoutes.CATEGORY);
-        const brandItens = await findAll(apiRoutes.BRANDS);
-
-
-
-        await setmenuItens({
-            clientId: clientItens,
-            storeId: storeItens,
-            categoryId: categoryItens,
-            brandId: brandItens
-        });
-        console.log('menuItens', menuItens)
-
-    }
-
-    useEffect(async () => {
-
-        populate()
-
+ 
+    useEffect(() => {
+        async function setMenu() {
+            const storeItens = await findAll(apiRoutes.STORE);
+            const categoryItens = await findAll(apiRoutes.CATEGORIES);
+            const brandItens = await findAll(apiRoutes.BRANDS);
+            const materialsItens = await findAll(apiRoutes.MATERIALS);
+            const stylesItens = await findAll(apiRoutes.STYLES);
+            const colorsItens = await findAll(apiRoutes.COLORS);
+    
+    
+            await setmenuItens({
+                storeId: storeItens,
+                categoryId: categoryItens,
+                brandId: brandItens,
+                materialsId: materialsItens,
+                stylesId: stylesItens,
+                colorsId: colorsItens,
+            });
+            console.log('menuItens', menuItens)
+        }
+        setMenu();
     }, []);
+ 
 
 
 
@@ -140,15 +150,30 @@ export default function Product() {
     // }
 
     function convertData(data) {
+
+        const selectSizes=[]        
+        data['sizes'].value.map(item => {
+            if(item.value){
+                selectSizes.push(item.name);
+            }
+            
+        });
         const newData = {
-            name: data['name'].value,
-            price: data['price'].value,
-            clientId: data['clientId'].value,
-            productId: data['productId'].value,
-            storeId: data['storeId'].value,
-            description: data['description'].value,
-            categoryId: data['categoryId'].value,
-            brandId: data['brandId'].value,
+            information: {
+                category: data['categoryId'].value,
+                name: data['name'].value,
+                price: data['price'].value,
+                store: data['storeId'].value,
+            },
+
+            details: {
+                description: data['description'].value,
+                Sizes: selectSizes,
+                color: data['colorsId'].value,
+                Material: data['materialsId'].value,
+                Style: data['stylesId'].value,
+                Brand: data['brandId'].value,
+            }
         }
         return newData;
     }
@@ -193,10 +218,10 @@ export default function Product() {
         });
 
         const i = temp.indexOf(item)
-        item.value=!item.value
+        item.value = !item.value
         temp[i] = item
         console.log('sizes', temp)
-        handleChange('sizes',temp)
+        handleChange('sizes', temp)
 
     }
 
@@ -227,32 +252,15 @@ export default function Product() {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            label="Preço"
-                            value={fields.name.value}
+                            label="price"
+                            value={fields.price.value}
                             onChange={e => handleChange('price', e.target.value)}
-                            error={errors.name.error}
-                            helperText={errors.name.helperText}
+                            error={errors.price.error}
+                            helperText={errors.price.helperText}
                         />
                     </Grid>
 
-                    <Grid item xs={6}>
-                        <Select
-                            fullWidth
-
-                            label="cliente"
-                            value={fields.clientId.value}
-                            onChange={e => handleChange('clientId', e.target.value)}
-                            error={errors.clientId.error}
-                            helperText={errors.clientId.helperText}
-                        >
-
-                            {menuItens.clientId.map(item => (
-                                <MenuItem key={item.id} value={item.id} >
-                                    {item.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Grid>
+                    
 
 
                     <Grid item xs={6}>
@@ -317,6 +325,66 @@ export default function Product() {
                         </Select>
                     </Grid>
                     <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="materials"
+                            value={fields.materialsId.value}
+                            onChange={e =>
+                                handleChange('materialsId', e.target.value)
+                            }
+                            error={errors.materialsId.error}
+                            helperText={errors.materialsId.helperText}
+                        >
+
+                            {menuItens.materialsId.map(item => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="styles"
+                            value={fields.stylesId.value}
+                            onChange={e =>
+                                handleChange('stylesId', e.target.value)
+                            }
+                            error={errors.stylesId.error}
+                            helperText={errors.stylesId.helperText}
+                        >
+
+                            {menuItens.stylesId.map(item => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                            fullWidth
+
+                            label="colors"
+                            value={fields.colorsId.value}
+                            onChange={e =>
+                                handleChange('colorsId', e.target.value)
+                            }
+                            error={errors.colorsId.error}
+                            helperText={errors.colorsId.helperText}
+                        >
+
+                            {menuItens.colorsId.map(item => (
+                                <MenuItem key={item.id} value={item.id}>
+                                    {item.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={6}>
                         <TextField
                             fullWidth
                             label="Description"
@@ -329,6 +397,7 @@ export default function Product() {
 
                     {fields.sizes.value.map(item => (
                         <FormControlLabel
+                            label="Sizes"
                             control={<Checkbox checked={item.value} onChange={e => sizeHandleChange(item)} name={item.name} />}
                             label={item.name}
                         />

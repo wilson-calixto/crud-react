@@ -191,7 +191,23 @@ export const create = (route, body, nome_do_registro = 'Registro') => {
 
 
 
-
+export const findProducts = (route, search = '') => {
+  return async (dispatch, getState) => {
+      const searchData = search ? `search=${search}&` : '';
+      const { data } = await api.get(
+          `${route}`
+          //   /?${searchData}page=${
+          //   getState().register.pageNumber
+          //   }&size=${getState().register.pageSize}
+      );
+      const { content, pageable } = data;
+      // dispatch(setLoadingRows(false));
+      console.log('novas rows : ',data)
+      dispatch(setRows(data));
+      // dispatch(setPageSize(pageable.pageSize));
+      // dispatch(setTotaElements(data.totalElements));
+  };
+};
 
 export const find = (route, search = '') => {
   return async (dispatch, getState) => {

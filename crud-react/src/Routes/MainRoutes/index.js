@@ -22,9 +22,11 @@ export default function MainRoutes() {
 
 
                 <Route exact path={`${path}product`} component={Product} />
-                <Route path={`${path}product/my`} component={ProductList} />
+                <Route exact path={`${path}product/my`} component={ProductList} />
 
-                <Route path={`${path}tabela`} component={Test} />
+                <Route exact path={`${path}product/details/:productId`} component={Test} />
+
+                <Route path={`${path}tabela`} component={Tema} />
                 <Route path={`${path}tema`} component={Tema} />
                 </Switch>
 
