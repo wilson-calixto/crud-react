@@ -10,6 +10,7 @@ const apiRoutes = {
     TESTE_DE_API: '/teste_de_api',
     PRODUCTS:'/product',
     PRODUCTS2:'/product2',
+    RATING:'/rating',
 
     CLIENTS:'/clients',
     STORE:'/store',

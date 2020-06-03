@@ -63,50 +63,6 @@
       "id": 6
     }
   ],
-  "product": [
-    {
-      "information": {
-        "category": "men_s_fashion",
-        "name": "short",
-        "price": 14,
-        "sales": 14,
-        "store": "sdsdsdsdd",
-        "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
-        "rating": 0
-      },
-      "details": {
-        "description": "red and blue",
-        "Sizes": [],
-        "color": "red",
-        "Material": "poliester",
-        "Style": "casual",
-        "Brand": "as",
-        "last_ratings": []
-      },
-      "id": 1
-    },
-    {
-      "information": {
-        "category": "men_s_fashion",
-        "name": "short",
-        "price": 14,
-        "sales": 14,
-        "store": "sdsdsdsdd",
-        "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
-        "rating": 0
-      },
-      "details": {
-        "description": "red and blue",
-        "Sizes": [],
-        "color": "red",
-        "Material": "poliester",
-        "Style": "casual",
-        "Brand": "as",
-        "last_ratings": []
-      },
-      "id": 2
-    }
-  ],
   "clients": [
     {
       "name": "qqqqq",
@@ -161,9 +117,58 @@
       "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
       "store_name": "Personality printed Store",
       "rating": 4.5,
-      "shipping":12.50,
+      "totalRatings": 5,
+      "shipping": 12.50,
       "id": 1
-
+    }
+  ],
+  "rating": [
+    {
+      "id": 1,
+      "productID":1,
+      "rate":5,
+      "user": "AliExpress Shopper",
+      "description": " Everything is perfect. 100% recommended. Thank you!",
+      "date": "02 Jun 2020 12:27"
+    },
+    {
+      "id": 2,
+      "productID":1,
+      "rate":4,
+      "user": "A***z",
+      "description": "Excellent",
+      "date": "02 Jun 2020 12:27"
+    }
+  ],
+  "product": [
+    {
+      "information": {
+        "category": "men_s_fashion",
+        "name": "2020 moda camiseta shorts definir masculino verão 2pc treino + shorts conjuntos de praia dos homens casual camisetas conjunto sportwears",
+        "price": 14,
+        "sales": 14,
+        "store": "sdsdsdsdd",
+        "store_link": "https://www.aliexpress.com/store/5364166?spm=a2g0o.productlist.0.0.163b7322ioJtow",
+        "store_name": "Personality printed Store",
+        "rating": 4.5,
+        "totalRatings": 5,
+        "shipping": 12.50
+      },
+      "details": {
+        "description": "Material: metal + abs\n Cor: Cinza Ventilador: ventilador de controle de temperatura (precisa de script)\n Dissipador de calor: 3 dissipadores de calor de silicone\n Interruptor de alimentação: ligar/desligamento seguro/desligamento de força/reiniciar",
+        "Sizes": [],
+        "color": "red",
+        "Material": "poliester",
+        "Style": "casual",
+        "Brand": "as",
+        "fone": "99999-9999",
+        "mail": "abc@abc.com"
+      },
+      "images": [
+        {}
+      ],
+      "id": 1
     }
   ]
+  
 }

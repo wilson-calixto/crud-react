@@ -23,7 +23,9 @@ const Types = {
   SET_INITIAL_STATE: 'register/INITIAL_STATE',
   ADD_COURSE:"ADD_COURSE",
   SET_MATERIAL_THEME: 'SET_MATERIAL_THEME',
-  ADD_ROW: "ADD_ROW"
+  ADD_ROW: "ADD_ROW",
+  SET_SELECTED_PRODUCT:"SET_SELECTED_PRODUCT",
+  SET_LAST_RATING:"SET_LAST_RATING"
 };
 
 
@@ -31,6 +33,8 @@ const initialState = {
   rows: [
   {}
   ],
+    SelectedProduct:{information:{},details:{}},
+    last_ratings:[{}],
     pageNumber: 0,
     pageSize: 10,
     totalElements: 0,
@@ -191,23 +195,45 @@ export const create = (route, body, nome_do_registro = 'Registro') => {
 
 
 
-export const findProducts = (route, search = '') => {
-  return async (dispatch, getState) => {
-      const searchData = search ? `search=${search}&` : '';
+export const findProducts = (route) => {
+  return async (dispatch) => {
       const { data } = await api.get(
           `${route}`
-          //   /?${searchData}page=${
-          //   getState().register.pageNumber
-          //   }&size=${getState().register.pageSize}
       );
-      const { content, pageable } = data;
-      // dispatch(setLoadingRows(false));
-      console.log('novas rows : ',data)
       dispatch(setRows(data));
-      // dispatch(setPageSize(pageable.pageSize));
-      // dispatch(setTotaElements(data.totalElements));
   };
 };
+
+export const findRatingByProductId = (route, id = '') => {
+  return async (dispatch) => {
+      const { data } = await api.get(
+          `${route}`
+      );
+      console.log('findRatingByProductId',data)
+      dispatch(setLast_ratings(data));
+  };
+};
+export const setLast_ratings = last_ratings => ({
+  type: Types.SET_LAST_RATING,
+  last_ratings,
+});
+
+export const findProductById = (route, id = '') => {
+  return async (dispatch) => {
+      const { data } = await api.get(
+          `${route}/${id}`
+      );
+      console.log('datadata',data)
+      dispatch(setSelectedProduct(data));
+  };
+};
+
+export const setSelectedProduct = SelectedProduct => ({
+  type: Types.SET_SELECTED_PRODUCT,
+  SelectedProduct,
+});
+
+
 
 export const find = (route, search = '') => {
   return async (dispatch, getState) => {
@@ -262,18 +288,24 @@ export const setRows = rows => ({
 });
 
 
+
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
       case Types.ADD_COURSE:
-
           return { ...state, data: [...state.data, action.data] };
       
       case Types.ADD_ROW:
           return { ...state, rows: [...state.rows, action.rows] };
     
       case Types.SET_ROWS:
-          return { ...state, rows: action.rows };          
+          return { ...state, rows: action.rows };   
+      
+      case Types.SET_SELECTED_PRODUCT:
+          return { ...state, SelectedProduct: action.SelectedProduct };      
+      
+      case Types.SET_LAST_RATING:
+          return { ...state, last_ratings: action.last_ratings };                                         
           
       case Types.SET_APP_MODE:
           return { ...state, appMode: action.appMode };
