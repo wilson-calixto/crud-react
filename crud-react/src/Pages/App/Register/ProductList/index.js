@@ -64,7 +64,7 @@ function ProductList() {
   useEffect(() => {
     dispatch(setInitialState());
     // TODO MELHORAR A RESPOSTA DO BACKEND PRA METODO DE GET
-    dispatch(findProducts(apiRoutes.PRODUCTS2));
+    dispatch(findProducts(apiRoutes.PRODUCTS2,'5669567ds2599'));
   }, []);
 
   const { rows, pageNumber, pageSize, totalElements, deleteInfo, columns } = useSelector(
@@ -79,7 +79,7 @@ function ProductList() {
         <React.Fragment>
           <Card className={classes.card}>
             <CardActionArea>
-            <Link to={'details/'+row.id}>
+            <Link to={'details/'+row._id}>
                 <CardMedia
                   className={classes.media}
                   image="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png"
@@ -89,7 +89,7 @@ function ProductList() {
 
               <CardContent>
                 {/* TODO fazer essa rota de outro jeito */}
-              <Link to={'details/'+row.id}>
+              <Link to={'details/'+row._id}>
                   <Typography gutterBottom component="h1">
                     {row.name}
                   </Typography>

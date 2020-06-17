@@ -73,13 +73,12 @@ export default function Test() {
         dispatch(setInitialState());
         dispatch(findProductById(apiRoutes.PRODUCTS, productId));
         dispatch(findRatingByProductId(apiRoutes.RATING, productId));
-
+console.log(SelectedProduct)
     }, []);
 
     const { SelectedProduct, last_ratings } = useSelector(
         state => state.todos
     );
-    const [value, setValue] = React.useState(2);
 
 
     console.log('SelectedProduct', SelectedProduct)
@@ -100,6 +99,11 @@ export default function Test() {
                         <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
                         <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
 
+                    {/* {SelectedProduct.imagens.map(imagem => (
+                        <img src={"data:image/png;base64,"+imagem} alt="Red dot" />
+                        ))
+                    } */}
+                       
                     </AliceCarousel>
                 </Grid>
 
@@ -153,7 +157,7 @@ export default function Test() {
 
                     </Link>
                     <Typography component="h2">
-                        Fone number: {SelectedProduct.details.last_ratings}
+                        Fone number: {SelectedProduct.details.fone}
                     </Typography>
 
                     <Typography component="h2">
@@ -211,13 +215,11 @@ export default function Test() {
                     {/* <Typography gutterBottom component="subtitle2">
                         {SelectedProduct.details.}
                     </Typography>  src="https://ae01.alicdn.com/kf/Ha92afc661dfb451389ab4bb282009f11S.jpg_220x220q90.jpg" />*/}
-
                     <div>
-                        <img className="photo2" src="https://ae01.alicdn.com/kf/H99827755ac4742138d88ae686ee2183aA.jpg" />
-                        <img className="photo2" src="https://ae01.alicdn.com/kf/H0d58ccd3df0c498cb695041020942a5fb.jpg" />
-                        <img className="photo2" src="https://ae01.alicdn.com/kf/H094c86f682ed4b74bb9d4d3d54215d71n.jpg" />
-                        <img className="photo2" src="https://ae01.alicdn.com/kf/Ha4b7d08f4a634a34a40862fc1ce16484H.jpg" />
-                        <img className="photo2" src="https://ae01.alicdn.com/kf/H9b23561197b741e69c468f77673af9277.jpg" />
+                    {SelectedProduct.imagens.map(imagem => (
+                        <img className="photo2" src={"data:image/png;base64,"+imagem} alt="Red dot" />
+                        ))
+                    }
                     </div>
 
 

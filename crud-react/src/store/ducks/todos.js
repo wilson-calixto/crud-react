@@ -33,8 +33,8 @@ const initialState = {
   rows: [
   {}
   ],
-    SelectedProduct:{information:{},details:{}},
-    last_ratings:[{}],
+    SelectedProduct:{information:{},details:{Sizes:[]},imagens:[]}, //,main_imagens:[]
+    last_ratings:[{ _id:'', category:'', date:'', email:'',  fk_product:'', fk_product_details:'',imagens:[],rate:'',text:'',user:'' }],
     pageNumber: 0,
     pageSize: 10,
     totalElements: 0,
@@ -195,10 +195,11 @@ export const create = (route, body, nome_do_registro = 'Registro') => {
 
 
 
-export const findProducts = (route) => {
+export const findProducts = (route,store_id='') => {
   return async (dispatch) => {
-      const { data } = await api.get(
-          `${route}`
+    const searchData = store_id ? `store_id=${store_id}` : '';
+    const { data } = await api.get(
+        `${route}?${searchData}`
       );
       dispatch(setRows(data));
   };
@@ -224,6 +225,9 @@ export const findProductById = (route, id = '') => {
           `${route}/${id}`
       );
       console.log('datadata',data)
+      console.log('datadata',data)
+      console.log('datadata',data)
+
       dispatch(setSelectedProduct(data));
   };
 };
