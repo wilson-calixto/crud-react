@@ -16,7 +16,8 @@ import Button from '@material-ui/core/Button';
 import {
     setInitialState,
     findProductById,
-    findRatingByProductId
+    findRatingByProductId,
+    findProductImagesById
 } from '../../../../store/ducks/todos';
 import Divider from '@material-ui/core/Divider';
 import {
@@ -72,16 +73,18 @@ export default function Test() {
     useEffect(() => {
         dispatch(setInitialState());
         dispatch(findProductById(apiRoutes.PRODUCTS, productId));
+        // dispatch(findProductImagesById(apiRoutes.PRODUCTS+'/main_images',productId));
+
         dispatch(findRatingByProductId(apiRoutes.RATING, productId));
 console.log(SelectedProduct)
     }, []);
 
-    const { SelectedProduct, last_ratings } = useSelector(
+    const { SelectedProduct,main_imagens,adtional_images, last_ratings } = useSelector(
         state => state.todos
     );
 
 
-    console.log('SelectedProduct', SelectedProduct)
+    console.log('adtional_images', adtional_images)
 
 
     return (
@@ -94,11 +97,13 @@ console.log(SelectedProduct)
                         showSlideIndex={true}
                     >
 
-                        <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
-                        <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
-                        <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
-                        <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
-
+                        {/* <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
+                        <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" /> */}
+                   
+                        {adtional_images.map(imagem2 => (
+                        <img className="photo2" src={"data:image/png;base64,"+imagem2} alt="Red dot" />
+                        ))
+                    }
                     {/* {SelectedProduct.imagens.map(imagem => (
                         <img src={"data:image/png;base64,"+imagem} alt="Red dot" />
                         ))
@@ -216,7 +221,7 @@ console.log(SelectedProduct)
                         {SelectedProduct.details.}
                     </Typography>  src="https://ae01.alicdn.com/kf/Ha92afc661dfb451389ab4bb282009f11S.jpg_220x220q90.jpg" />*/}
                     <div>
-                    {SelectedProduct.imagens.map(imagem => (
+                    {main_imagens.map(imagem => (
                         <img className="photo2" src={"data:image/png;base64,"+imagem} alt="Red dot" />
                         ))
                     }

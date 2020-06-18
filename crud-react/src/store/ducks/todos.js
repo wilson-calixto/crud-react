@@ -25,7 +25,10 @@ const Types = {
   SET_MATERIAL_THEME: 'SET_MATERIAL_THEME',
   ADD_ROW: "ADD_ROW",
   SET_SELECTED_PRODUCT:"SET_SELECTED_PRODUCT",
-  SET_LAST_RATING:"SET_LAST_RATING"
+  SET_LAST_RATING:"SET_LAST_RATING",
+  SET_MAIN_IMAGENS:"SET_MAIN_IMAGENS",
+  SET_ADTIONAL_IMAGES:'SET_ADTIONAL_IMAGES'
+
 };
 
 
@@ -34,6 +37,8 @@ const initialState = {
   {}
   ],
     SelectedProduct:{information:{},details:{Sizes:[]},imagens:[]}, //,main_imagens:[]
+    main_imagens:[],
+    adtional_images:[],
     last_ratings:[{ _id:'', category:'', date:'', email:'',  fk_product:'', fk_product_details:'',imagens:[],rate:'',text:'',user:'' }],
     pageNumber: 0,
     pageSize: 10,
@@ -229,6 +234,10 @@ export const findProductById = (route, id = '') => {
       console.log('datadata',data)
 
       dispatch(setSelectedProduct(data));
+
+      dispatch(findProductMainImagesById(route+'/main_images',id));
+      dispatch(findProductAdtionalImagesById(route+'/adtional_images',id));
+      
   };
 };
 
@@ -236,6 +245,37 @@ export const setSelectedProduct = SelectedProduct => ({
   type: Types.SET_SELECTED_PRODUCT,
   SelectedProduct,
 });
+
+export const findProductMainImagesById = (route, id = '') => {
+  return async (dispatch) => {
+      const { data } = await api.get(
+          `${route}/${id}`
+      );
+      dispatch(setSelectedImages(data));
+  };
+};
+
+export const findProductAdtionalImagesById = (route, id = '') => {
+  return async (dispatch) => {
+      const { data } = await api.get(
+          `${route}/${id}`
+      );
+      dispatch(setAdtionalImages(data));
+  };
+};
+
+
+
+export const setSelectedImages = main_imagens => ({
+  type: Types.SET_MAIN_IMAGENS,
+  main_imagens,
+});
+
+export const setAdtionalImages = adtional_images => ({
+  type: Types.SET_ADTIONAL_IMAGES,
+  adtional_images,
+});
+
 
 
 
@@ -307,6 +347,13 @@ export default function reducer(state = initialState, action) {
       
       case Types.SET_SELECTED_PRODUCT:
           return { ...state, SelectedProduct: action.SelectedProduct };      
+      
+      case Types.SET_MAIN_IMAGENS:
+          return { ...state, main_imagens: action.main_imagens };      
+        
+      case Types.SET_ADTIONAL_IMAGES:
+        return { ...state, adtional_images: action.adtional_images };      
+
       
       case Types.SET_LAST_RATING:
           return { ...state, last_ratings: action.last_ratings };                                         
