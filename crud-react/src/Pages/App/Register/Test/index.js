@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import List from '@material-ui/core/List';
-
+import MobileStepper from '@material-ui/core/MobileStepper';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Tabela from '../../../Tabela';
 import { useParams } from "react-router-dom";
 import AliceCarousel from 'react-alice-carousel';
@@ -65,8 +67,39 @@ import {
     WorkplaceIcon,
 } from "react-share";
 import { grid } from '@material-ui/system';
+
+
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+const useStyles = makeStyles((theme) => ({
+    root: {
+      maxWidth: 400,
+      flexGrow: 1,
+    },
+    header: {
+      display: 'flex',
+      alignItems: 'center',
+      height: 50,
+      paddingLeft: theme.spacing(4),
+      backgroundColor: theme.palette.background.default,
+    },
+    img: {
+      height: 255,
+      display: 'block',
+      maxWidth: 400,
+      overflow: 'hidden',
+      width: '100%',
+    },
+  }));
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 export default function Test() {
+    const theme = useTheme();
+
     const dispatch = useDispatch();
+    const classes = useStyles();
 
     let { productId } = useParams();
 
@@ -83,7 +116,31 @@ console.log(SelectedProduct)
         state => state.todos
     );
 
+    const [activeStep, setActiveStep] = React.useState(0);
+  
+    const handleNext = () => {
+        
+        // if(adtional_images.length-1==step){
+        //     setActiveStep(0);      
+        // }else{
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        // }
+      
+    };
+  
+    const handleBack = () => {
+        // console.log('step',step)
 
+        // if(step==0){
+        //     setActiveStep(adtional_images.length-1);
+        // }else{
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        // }
+    };
+  
+    const handleStepChange = (step) => {
+      setActiveStep(step);
+    };
     console.log('adtional_images', adtional_images)
 
 
@@ -93,23 +150,42 @@ console.log(SelectedProduct)
                 <Grid item xs={2} ></Grid>
 
                 <Grid item xs={4} >
-                    <AliceCarousel
-                        showSlideIndex={true}
+
+                                    
+                    <AutoPlaySwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={activeStep}
+                        onChangeIndex={handleStepChange}
+                        enableMouseEvents
                     >
 
-                        {/* <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" />
-                        <img src="https://disottimodamasculina.com.br/wp-content/uploads/2019/01/disotticapa3.png" /> */}
-                   
-                        {adtional_images.map(imagem2 => (
-                        <img className="photo2" src={"data:image/png;base64,"+imagem2} alt="Red dot" />
-                        ))
-                    }
-                    {/* {SelectedProduct.imagens.map(imagem => (
-                        <img src={"data:image/png;base64,"+imagem} alt="Red dot" />
-                        ))
-                    } */}
-                       
-                    </AliceCarousel>
+                        {adtional_images.map((step) => (
+                        <div>
+                            {Math.abs(activeStep - adtional_images.length+1) <= 2 ? (
+                                <img className="photo3" src={"data:image/png;base64,"+step} alt="Red dot" />
+                            ) : null}
+                        </div>
+                        ))}
+                    </AutoPlaySwipeableViews>
+                    <MobileStepper
+                                    steps={adtional_images.length}
+                                    position="static"
+                                    variant="text"
+                                    activeStep={activeStep}
+                                    nextButton={
+                                    <Button size="small" onClick={handleNext} disabled={activeStep === adtional_images.length - 1}>
+                                        Next
+                                        <KeyboardArrowRight />
+                                    </Button>
+                                    }
+                                    backButton={
+                                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                                        <KeyboardArrowLeft />
+                                        Back
+                        </Button>
+                        }
+                    />
+  
                 </Grid>
 
                 <Grid item xs={4} >
@@ -126,18 +202,7 @@ console.log(SelectedProduct)
 
                        </Grid>
 
-
-
-
-
-
-
-
-
-
-
                     <Divider />
-
 
                     <Typography gutterBottom variant="headline" component="h2">
                         Price: {SelectedProduct.information.price}
@@ -199,11 +264,6 @@ console.log(SelectedProduct)
                 </Grid>
             </Grid>
 
-            {/* <img src={{
-          uri:
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',
-        }}
-        /> */}
 
 
             <Grid container spacing={0}>
